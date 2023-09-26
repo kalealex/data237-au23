@@ -39,18 +39,20 @@ We will hold class **Tuesday and Thursday 12:30 PM - 01:50 PM in Ryerson 251**.
 
 Students seeking help with concepts or coursework should plan to attend office hours. We will hold the following office hours each week unless posted otherwise.
 
-| Day of week | Time of day         | Person hosting |
-| :---------- | :-----------------  | :------------- |
-| Tuesday     | 10:30 AM - 12:00 PM | Alex           |
-| Thursday    | 10:30 AM - 12:00 PM | Alex           |
+| Day of week | Time of day         | Person hosting | Where         |
+| :---------- | :-----------------  | :------------- | :------------ |
+| Monday      | 10:00 AM - 11:30 AM | Danni          | Zoom          |
+| Monday      | 11:30 AM -  1:00 PM | Krisha         | Zoom          |
+| Tuesday     | 10:30 AM - 12:00 PM | Alex           | JCL 263       |
+| Wednesday   |  1:00 PM -  2:30 PM | Danni          | JCL 2nd floor |
+| Thursday    | 10:30 AM - 12:00 PM | Alex           | JCL 263       |
+| Thursday    |  4:00 PM -  5:30 PM | Krisha         | JCL 2nd floor |
 
-Alex will hold office hours in John Crerar Library room 263.
+Alex will hold office hours in John Crerar Library (JCL) room 263.
 
-Krisha will hold office hours... *TBD*
+Krisha and Danni will hold office hours on the JCL second floor common area and on Zoom (links to come).
 
-Danni will hold office hours... *TBD*
-
-**TA office hours will be posted when Krisha and Danni have their course schedules.**
+**Office hours begin on October 2 and end on December 1.**
 
 Due to conference travel, **all course staff will be unavailable October 20 - 27**. We will schedule extra office hours around these times to make sure students have access to help.
 
