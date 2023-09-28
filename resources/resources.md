@@ -102,3 +102,6 @@ Here are optional readings for the course separated by topic.
 - Interpretability by marginal feature importance using [SHAP](https://arxiv.org/pdf/1705.07874)
 - A brief write up about [Microsoft's interpretML](https://arxiv.org/pdf/1909.09223) -->
 
+## Other links
+
+- A [summary](https://www.axismaps.com/guide/visual-variables) of Jacque Bertin's visual variables (what we often call encoding channels)
