@@ -1,0 +1,99 @@
+---
+title: "DATA 237: Computational Notebooks Demo"
+author: "Alex Kale"
+date: "2023-10-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(patchwork)
+```
+
+## Loading the prepping the data
+
+```{r}
+df = read_csv("../data/iris.csv")
+head(df)
+```
+
+## Vis from wide df
+
+Sepal and petal dimensions
+
+```{r}
+sepal = df |> ggplot(aes(x=sepal_length, y=sepal_width, color=species)) +
+  geom_point() +
+  theme_bw() +
+  labs(title = "Sepal dimensions") +
+  theme(legend.position = "none")
+
+petal = df |> ggplot(aes(x=petal_length, y=petal_width, color=species)) +
+  geom_point() +
+  theme_bw() +
+  labs(title = "Petal dimensions")
+
+sepal + petal
+```
+
+Lengths and widths
+
+```{r}
+len = df |> ggplot(aes(x=sepal_length, y=petal_length, color=species)) +
+  geom_point() +
+  theme_bw() +
+  labs(title = "Is sepal length predictive of petal length?") +
+  theme(legend.position = "none")
+
+wid = df |> ggplot(aes(x=sepal_width, y=petal_width, color=species)) +
+  geom_point() +
+  theme_bw() +
+  labs(title = "What about width?")
+
+len + wid
+```
+
+## Vis from long df
+
+Pivot dataframe longer
+
+```{r}
+long_df = df |> 
+  pivot_longer(
+    !species,
+    names_to = c(".value", "dimension"),
+    names_pattern = "(.*)_(.*)"
+  )
+```
+
+```{r}
+long_df |> ggplot(aes(x=sepal, y=petal, color=species)) +
+  geom_point() +
+  theme_bw() +
+  facet_grid(. ~ dimension)
+```
+
+Now, let's see what we can do with a different pivot.
+
+```{r}
+longer_df = df |> 
+  pivot_longer(
+    cols = sepal_length:petal_width,
+    names_to = c("organ", "dimension"),
+    names_sep = "_",
+    values_to = "measure")
+
+head(longer_df)
+```
+
+```{r}
+longer_df |> ggplot(aes(x=organ, y=measure, color=species)) +
+  geom_point(position = position_jitterdodge()) + # showed position_jitter() in class
+  theme_bw() +
+  facet_grid(. ~ dimension)
+```
+
