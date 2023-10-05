@@ -50,7 +50,7 @@ Students seeking help with concepts or coursework should plan to attend office h
 
 Alex will hold office hours in John Crerar Library (JCL) room 263.
 
-Krisha and Danni will hold office hours on the JCL second floor common area and on Zoom (links in table above).
+Krisha and Danni will hold office hours on the JCL second floor common area outside of JCL 291 and on Zoom (links in table above).
 
 **Office hours begin on October 2 and end on December 1.**
 
