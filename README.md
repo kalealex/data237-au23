@@ -44,9 +44,9 @@ Students seeking help with concepts or coursework should plan to attend office h
 | Monday      | 10:00 AM - 11:30 AM | Danni          | [Zoom 1](https://uchicago.zoom.us/j/99589663115?pwd=anIyQ3BFak5XdjFDNUFmZ0I0UTlJdz09) |
 | Monday      | 11:30 AM -  1:00 PM | Krisha         | [Zoom 2](https://uchicago.zoom.us/my/krishamehta?pwd=U3ZzemRST0RETnREdHQrblZUb1FoQT09) |
 | Tuesday     | 10:30 AM - 12:00 PM | Alex           | JCL 263       |
+| Tuesday     |  4:00 PM -  5:30 PM | Krisha         | JCL 2nd floor |
 | Wednesday   |  1:00 PM -  2:30 PM | Danni          | JCL 2nd floor |
 | Thursday    | 10:30 AM - 12:00 PM | Alex           | JCL 263       |
-| Thursday    |  4:00 PM -  5:30 PM | Krisha         | JCL 2nd floor |
 
 Alex will hold office hours in John Crerar Library (JCL) room 263.
 
