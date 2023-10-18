@@ -109,9 +109,9 @@ We have no class this week because the course staff are traveling for a conferen
 
 ### Week 6: Data interaction
 
-Oct 31 - Interaction (Exercise 6)
+Oct 31 - Interaction and Animation (two part lecture)
 
-Nov 2 - Animation
+Nov 2 - Making data interactive (Exercise 6)
 
 **Nov 3 - Exercise 5 due!**
 
