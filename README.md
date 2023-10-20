@@ -252,7 +252,7 @@ Assignments only (*not exercises or the project*) may be resubmitted one time ea
 
 **Conditions on resubmitting:** 
 
-- Students wishing to resubmit an assignment must do so *within two weeks of the assignment's due date*.
+- Students wishing to resubmit an assignment must do so *within three weeks of the assignment's due date*.
 - Students may not resubmit the same assignment more than one time.
 - A score bump upon resubmission is subject to the same standards as the original round of grading, e.g., the expectation for an S is still high. *Not all resubmissions are guaranteed a score bump.*
 - Resubmissions must go through the instructor, not the TAs, unless the instructor grants explicit permission otherwise.
@@ -263,7 +263,7 @@ Late submissions are not accepted in this class, except under specific circumsta
 
 Exceptions to the no late work policy:
 
-- **Resubmissions**: Students may resubmit each assignment once, within two weeks of that assignment's due date. To resubmit an assignment, students should email the instructor (see above). Resubmitted assignments can receive a score change of only one increment, i.e., U to N or N to S. *Resubmission cannot be used for exercises or the project.*
+- **Resubmissions**: Students may resubmit each assignment once, within three weeks of that assignment's due date. To resubmit an assignment, students should email the instructor (see above). Resubmitted assignments can receive a score change of only one increment, i.e., U to N or N to S. *Resubmission cannot be used for exercises or the project.*
 - **Emergencies**: If you have an emergency and feel it warrants an exception to the no late work policy, you should first be in contact with your College advisor, as the College should be aware of the emergency and ensure that any proper university or department policies are followed if needed (e.g., an injury might require Student Disability Services accommodations). Emergencies entail conditions beyond the student's control that make it infeasible for them to complete coursework on time. This policy is not intended to provide relief for failures of time management. Once students have contacted their College advisor, they should contact their instructor via email with a CC to their College advisor. Your instructor does not need to know the details of your emergency, but they do need your College advisor to confirm that your situation qualifies as an emergency. Contacting us as early as is practical given the emergency makes the process of accommodating your situation work more smoothly for everyone. We care about your well-being and success in the class, and have put these policies in place to be fair and give students agency.
 
 No other exceptions will be made.
