@@ -123,9 +123,9 @@ Nov 9 - Storytelling
 
 **Nov 10 - Exercise 6 due!**
 
-**Nov 10 - Assignment 3 (Interactive data) due!**
-
 ### Week 8: Uncertainty
+
+**Nov 13 - Assignment 3 (Interactive data) due!**
 
 Nov 14 - Uncertainty visualization
 
