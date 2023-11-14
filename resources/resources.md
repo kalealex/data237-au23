@@ -28,27 +28,27 @@ This is where we'll post links to software tools and demos, separated by topic.
 - [Scikit-learn](https://scikit-learn.org/stable/) Python module for ML
 - Microsoft's open source Python module for ML interpretability, [interpret](https://github.com/interpretml/interpret/)
 
-<!-- ### Demos and videos
+### Demos and videos
 
 - Interactive [scatterplot matrix](https://vega.github.io/vega/examples/brushing-scatter-plots/)
 - Hans Rosling's [visualization storytelling](https://www.youtube.com/watch?v=hVimVzgtD6w)
 - Amanda Cox from the New York Times on [uncertainty visualizations in the news](https://www.youtube.com/watch?v=0L1tGo-DvD0) (2:55 – 10:43)
-- Fred Hohman's presentations about his work on [ML interpretability](https://fredhohman.com/dissertation/) -->
+- Fred Hohman's presentations about his work on [ML interpretability](https://fredhohman.com/dissertation/)
 
 
-<!-- ### Choosing colors
+### Choosing colors
 
 - An overview of [color schemes](https://observablehq.com/@d3/color-schemes) available in Altair.
-- The [ColorBrewer](https://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3) tool for choosing color palettes. -->
+- The [ColorBrewer](https://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3) tool for choosing color palettes.
 
-<!-- ### Map projections
+### Map projections
 
-- An interactive gallery of [map projections](https://observablehq.com/@d3/projection-transitions) available in Altair -->
+- An interactive gallery of [map projections](https://observablehq.com/@d3/projection-transitions) available in Altair
 
-<!-- ### Data stories
+### Data stories
 
 - [Idyll](https://idyll-lang.org/gallery) language for interactive data stories.
-- Check out more interactive articles on [Distill Pub](https://distill.pub/) and the [Parametric Press](https://parametric.press/issue-02/) -->
+- Check out more interactive articles on [Distill Pub](https://distill.pub/) and the [Parametric Press](https://parametric.press/issue-02/)
 
 
 ## Readings
@@ -67,18 +67,18 @@ Here are optional readings for the course separated by topic.
 - Particularly interesting violations of the expressiveness principle (a.k.a. "tell the truth and nothing but the truth") occur when people's expectations about what a certain kind of chart will show are violated. Among other sources, these expectations are informed by **graphical conventions**, such as the expectations that people have about the semantics of bars and lines addressed in this [paper by Zacks and Tversky](https://dcl.wustl.edu/files/2017/09/zacksmemcog99-12d5ktx.pdf) or the expectation that bars contain all the data points they represent addressed in this [journal of vision paper by Kerns and Wilmer](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8648051/), which I mentioned in class.
 - A few years ago, some of my colleagues at Northwestern decided there was too much visualization research for practitioners to keep up with. They led an effort to write this review article summarizing the [science of "what works"](https://journals.sagepub.com/doi/reader/10.1177/15291006211051956) in data visualization design.
 
-<!-- ### Cartography
+### Cartography
 
-- A nice [survey paper](https://parkerziegler.com/papers/a-need-finding-study-with-users-of-geospatial-data.pdf) on map making tools and why they are mostly hard to use -->
+- A nice [survey paper](https://parkerziegler.com/papers/a-need-finding-study-with-users-of-geospatial-data.pdf) on map making tools and why they are mostly hard to use
 
-<!-- ### Interaction and animation
+### Interaction and animation
 
 - Data driven documents ([D3](http://vis.stanford.edu/papers/d3)) is the javascript library that supports most interactive visualizations on the web.
 - [Animated Transitions in Statistical Graphics](https://idl.cs.washington.edu/files/2007-AnimatedTransitions-InfoVis.pdf) is an authoritative paper on animation design for visualization.
 - Interesting paper on using [animation to show aggregation operations](https://idl.cs.washington.edu/files/2019-AnimatedAggregates-EuroVis.pdf)
-- [Animation: Can it facilitate?](https://hci.stanford.edu/courses/cs448b/papers/Tversky_AnimationFacilitate_IJHCS02.pdf) is a great review article by Barbara Tversky -->
+- [Animation: Can it facilitate?](https://hci.stanford.edu/courses/cs448b/papers/Tversky_AnimationFacilitate_IJHCS02.pdf) is a great review article by Barbara Tversky
 
-<!-- ### Narrative visualization, deception, and persuasion
+### Narrative visualization, deception, and persuasion
 
 - Hullman's paper on [visualization rhetoric](http://users.eecs.northwestern.edu/~jhullman/vis_rhetoric.pdf).
 - Correll's paper on [truncating the y-axis](https://arxiv.org/pdf/1907.02035).
@@ -86,14 +86,14 @@ Here are optional readings for the course separated by topic.
 - Recent analysis of [how people actually lie with charts](https://dl.acm.org/doi/pdf/10.1145/3544548.3580910).
 - Segel and Heer's [analysis of narrative strategies](https://idl.cs.washington.edu/files/2010-Narrative-InfoVis.pdf) in data storytelling.
 - Hohman et al's [analysis of interactive articles](https://distill.pub/2020/communicating-with-interactive-articles/).
-- Papers on [Idyll](https://idl.cs.washington.edu/files/2018-Idyll-UIST.pdf) and [Idyll Studio](https://idl.cs.washington.edu/files/2021-IdyllStudio-UIST.pdf). -->
+- Papers on [Idyll](https://idl.cs.washington.edu/files/2018-Idyll-UIST.pdf) and [Idyll Studio](https://idl.cs.washington.edu/files/2021-IdyllStudio-UIST.pdf).
 
-<!-- ### Uncertainty visualization
+### Uncertainty visualization
 
 - Hullman's article on [Why authors don't visualize uncertainty](https://mucollective.northwestern.edu/files/2019-Value%20of%20Uncertainty-VIS.pdf).
 - Kay's first study on [uncertainty in bus arrival times](https://mucollective.northwestern.edu/files/2016-WhenIsMyBus-CHI.pdf) where he introduces quantile dotplots, and the [second study](https://mucollective.northwestern.edu/files/2018-UncertainBusDecisions-CHI.pdf) where they use a decision task.
 - Prof. Kale's work on [decision making with uncertainty visualizations](https://mucollective.northwestern.edu/files/2020%20-%20Kale,%20Visual%20Reasoning%20Strategies%20for%20Effect%20Size%20Judgements.pdf).
-- Hullman and Gelman's manifesto on [visualizations as model checks](https://mucollective.northwestern.edu/files/2021-hdsr-paper.pdf) -->
+- Hullman and Gelman's manifesto on [visualizations as model checks](https://mucollective.northwestern.edu/files/2021-hdsr-paper.pdf)
 
 <!-- ### ML Interpretability
 
