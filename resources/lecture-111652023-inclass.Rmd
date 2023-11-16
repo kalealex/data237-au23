@@ -1,0 +1,225 @@
+---
+title: "Lecture 11/16/2023 (in class)"
+author: "Alex Kale"
+date: "2023-11-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(dplyr)
+library(tidyr)
+library(modelr)
+library(ggplot2)
+library(brms)
+library(tidybayes)
+library(ggdist)
+```
+
+## Load student absences data
+
+```{r}
+df = read_csv("../data/students.csv", show_col_types = FALSE)
+head(df)
+```
+
+Preprocessing
+
+```{r}
+model_df = df |>
+  mutate(
+    # factors
+    address = as.factor(address),
+    failures = as.factor(failures),
+    internet = as.factor(internet),
+    g_edu = as.factor(g_edu),
+    g_job = as.factor(g_job),
+    # centered continuous predictors
+    c_age = age - mean(age),
+    c_tt = travel_time - mean(travel_time),
+    c_st = study_time - mean(study_time),
+    c_alc = alcohol - mean(alcohol)
+  )
+```
+
+## Find a model family
+
+```{r}
+m_norm = brm(
+  bf("absences ~ 1"),
+  family = "normal",
+  data = model_df,
+  iter = 2000, warmup = 1000, chains = 2,
+  file = "m0.rds"
+)
+```
+
+```{r}
+summary(m_norm)
+```
+
+```{r}
+plot(m_norm)
+```
+
+```{r}
+pairs(m_norm)
+```
+
+PP check
+
+```{r}
+model_df |>
+  select(absences) |>
+  add_predicted_draws(m_norm, ndraws = 100) |>
+  ggplot(aes(x = .prediction)) +
+  stat_slab(fill = "steelblue") +
+  stat_dots(aes(x = absences), quantiles = 50, side = "bottom", data = model_df) +
+  theme_bw()
+```
+
+Now try lognormal.
+
+```{r}
+m_hlogn = brm(
+  bf("absences ~ 1"),
+  family = hurdle_lognormal(),
+  data = model_df,
+  iter = 2000, warmup = 1000, chains = 2,
+  file = "m1.rds"
+)
+```
+
+```{r}
+summary(m_hlogn)
+```
+
+```{r}
+plot(m_hlogn)
+```
+
+PP check
+
+```{r}
+model_df |>
+  select(absences) |>
+  add_predicted_draws(m_hlogn, ndraws = 100) |>
+  ggplot(aes(x = .prediction)) +
+  stat_slab(fill = "steelblue") +
+  stat_dots(aes(x = absences), quantiles = 50, side = "bottom", data = model_df) +
+  theme_bw()
+```
+
+## Add predictors
+
+```{r}
+m_mains = brm(
+  bf("absences ~ c_age + c_st + g_edu"),
+  family = hurdle_lognormal(),
+  data = model_df,
+  iter = 2000, warmup = 1000, chains = 2,
+  file = "m2.rds"
+)
+```
+
+```{r}
+summary(m_mains)
+```
+
+```{r}
+plot(m_mains)
+```
+
+PP check
+
+```{r}
+model_df |>
+  select(absences, c_age, c_st, g_edu) |>
+  add_predicted_draws(m_mains, ndraws = 100) |>
+  ggplot(aes(x = .prediction)) +
+  stat_slab(fill = "steelblue") +
+  stat_dots(aes(x = absences), quantiles = 50, side = "bottom", data = model_df) +
+  theme_bw()
+```
+
+```{r}
+model_df |>
+  select(absences, c_age, c_st, g_edu) |>
+  add_predicted_draws(m_mains, ndraws = 100) |>
+  ggplot(aes(x = c_age, y = .prediction)) +
+  stat_lineribbon(.width = c(0.5, 0.8, 0.95)) +
+  scale_fill_brewer() + 
+  geom_point(aes(y = absences), alpha = 0.4, data = model_df) +
+  theme_bw()
+```
+
+```{r}
+model_df |>
+  select(absences, c_age, c_st, g_edu) |>
+  add_predicted_draws(m_mains, ndraws = 100) |>
+  ggplot(aes(x = c_st, y = .prediction)) +
+  stat_lineribbon(.width = c(0.5, 0.8, 0.95)) +
+  scale_fill_brewer() + 
+  geom_point(aes(y = absences), alpha = 0.4, data = model_df) +
+  theme_bw()
+```
+
+```{r}
+model_df |>
+  select(absences, c_age, c_st, g_edu) |>
+  add_predicted_draws(m_mains, ndraws = 100) |>
+  ggplot(aes(x = g_edu, y = .prediction)) +
+  stat_interval(.width = c(0.5, 0.8, 0.95), position = position_nudge(x = -0.1)) +
+  scale_color_brewer() + 
+  geom_point(aes(y = absences), alpha = 0.4, data = model_df) +
+  theme_bw()
+```
+
+Inferential uncertainty
+
+```{r}
+predictor_grid = model_df |> 
+  data_grid(c_age, c_st, g_edu) |>
+  ungroup()
+```
+
+```{r}
+model_df |>
+  select(absences, c_age, c_st, g_edu) |>
+  add_epred_draws(m_mains, ndraws = 100) |>
+  ggplot(aes(x = g_edu, y = .epred)) +
+  stat_interval(.width = c(0.5, 0.8, 0.95), position = position_nudge(x = -0.1)) +
+  scale_color_brewer() + 
+  geom_point(aes(y = absences), alpha = 0.4, data = model_df) +
+  theme_bw()
+```
+
+```{r}
+predictor_grid |>
+  add_epred_draws(m_mains, ndraws = 100) |>
+  ggplot(aes(x = c_st, y = .epred)) +
+  stat_lineribbon(.width = c(0.5, 0.8, 0.95)) +
+  scale_fill_brewer() + 
+  geom_point(aes(y = absences), alpha = 0.4, data = model_df) +
+  theme_bw() + 
+  facet_grid(. ~ g_edu)
+```
+
+```{r}
+countrasts_g_edu = predictor_grid |> 
+  add_epred_draws(m_mains, ndraws = 100) |>
+  compare_levels(.epred, by = g_edu) |>
+  ungroup() |>
+  mutate(g_edu = reorder(g_edu, .epred))
+```
+
+```{r}
+countrasts_g_edu |>
+  ggplot(aes(x = g_edu, y = .epred)) +  
+  stat_eye() +
+  # geom_hline(yintercept = 0, linetype = "dashed") +
+  coord_cartesian(ylim = c(-10, 10)) +
+  theme_bw()
+```
+

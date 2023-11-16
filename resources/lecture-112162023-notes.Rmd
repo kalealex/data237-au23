@@ -1,0 +1,310 @@
+---
+title: 'DATA 237: Stats Review'
+author: "Alex Kale"
+date: "2023-11-13"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(dplyr)
+library(tidyr)
+library(modelr)
+library(ggplot2)
+library(brms)
+library(tidybayes)
+library(ggdist)
+```
+
+## Very brief introduction
+
+Purpose of today's lesson is to get some practical perspective on how to create
+uncertainty visualizations, and how to visualize outputs from statistical models.
+
+Vis for model interpretability is one of the most important use cases in data
+science. It is seldom taught so directly in courses like this one.
+
+We expect students to know some regression, but we'll explain what the syntax is 
+doing as we go.
+
+We will use visualization tools built on `ggplot2` and Bayesian regression models.
+The reasons for using these tools are that: 
+
+1. `ggplot2` is an excellent implementation of grammar of graphics, which has 
+   been extended to support unparalleled flexibility in uncertainty vis.
+2. `brms` gives us sample-based representations of uncertainty from models, which
+   makes it possible to quantify uncertainty and create the widest possible range
+   of uncertainty visualizations.
+
+
+## Loading the prepping the data
+
+We're going to use data about student absences for today's demo.
+
+```{r cars}
+df = read_csv("../data/students.csv", show_col_types = FALSE)
+head(df)
+```
+
+Change anything we need to change before modeling. Mostly casting discrete variables
+as factors, so the model uses dummy variables for them. Also, centering continuous
+variables.
+
+```{r}
+model_df = df |> mutate(
+  # factors
+  address = as.factor(address),
+  failures = as.factor(failures),
+  internet = as.factor(internet),
+  g_edu = as.factor(g_edu),
+  g_job = as.factor(g_job),
+  # centered continuous predictors
+  c_age = age - mean(age),
+  c_tt = travel_time - mean(travel_time),
+  c_st = study_time - mean(study_time),
+  c_alc = alcohol - mean(alcohol),
+  # fake y axis var
+  y = 0
+)
+```
+
+
+## Finding a model family
+
+First a normal model.
+
+```{r}
+m_norm = brm(
+  bf("absences ~ 1"),
+  family = "normal",
+  data = model_df,
+  iter = 2000, warmup = 1000, chains = 2,
+  file = "../data/models/m0.rds")
+```
+
+Typical diagnostics. (Explain what I'm looking for)
+
+```{r}
+summary(m_norm)
+```
+
+```{r}
+plot(m_norm)
+```
+
+```{r}
+pairs(m_norm)
+```
+
+Posterior predictive check.
+
+```{r}
+model_df |>
+  select(absences, y) |>
+  add_predicted_draws(m_norm, ndraws = 200) |>
+  ggplot(aes(x = .prediction, y = y)) +
+  stat_slab(justification = -0.02, fill = "steelblue") +
+  stat_dots(aes(x = absences), quantiles = 50, side = "bottom", scale = 0.75, data = model_df) +
+  theme_bw()
+```
+
+Now a lognormal model (actually need a hurdle model).
+
+```{r}
+# show first with lognormal (fill give an error)
+# talk briefly about how we can handle the zeros: log(y+1), 0 => 0.0001, filter(absences > 0)
+m_hlogn = brm(
+  bf("absences ~ 1"),
+  family = hurdle_lognormal(),
+  data = model_df,
+  iter = 2000, warmup = 1000, chains = 2,
+  file = "../data/models/m1.rds")
+```
+
+Diagnostics
+
+```{r}
+summary(m_hlogn)
+```
+```{r}
+plot(m_hlogn)
+```
+
+```{r}
+pairs(m_hlogn)
+```
+
+PP check. Point out improvement and where we still have room to do better.
+
+```{r}
+model_df |>
+  select(absences, y) |>
+  add_predicted_draws(m_hlogn, ndraws = 200) |>
+  ggplot(aes(x = .prediction, y = y)) +
+  stat_slab(justification = -0.02, fill = "steelblue") +
+  stat_dots(aes(x = absences), quantiles = 50, side = "bottom", scale = 0.75, data = model_df) +
+  theme_bw()
+```
+
+
+## Finding a set of predictors
+
+**Exploratory vis in this section:** 
+
+- Take student suggestions until we have three predictors we are interested in.
+- Create PP checks with the previous model based on student suggestions to find 
+  possible predictors of interest.
+
+
+## Incorporating predictors
+
+Add predictors into a model. No interactions at first. Point out that I would 
+usually add these to sequential models one-by-one.
+
+```{r}
+m_mains = brm(
+  bf("absences ~ c_age + c_st + g_edu"),
+  family = hurdle_lognormal(),
+  data = model_df,
+  iter = 2000, warmup = 1000, chains = 2,
+  file = "../data/models/m2.rds")
+```
+
+Diagnostics.
+
+```{r}
+summary(m_mains)
+```
+
+```{r}
+plot(m_mains)
+```
+
+```{r}
+pairs(m_mains)
+```
+
+
+PP checks borrowing code from above, now with new model.
+
+```{r}
+model_df |>
+  select(absences, c_age, c_st, g_edu) |>
+  mutate(y = 0) |>
+  add_predicted_draws(m_mains, ndraws = 200) |>
+  ggplot(aes(x = .prediction, y = y)) +
+  stat_slab(justification = -0.02, fill = "steelblue") +
+  stat_dots(aes(x = absences), quantiles = 50, side = "bottom", scale = 0.75, data = model_df) +
+  theme_bw()
+```
+
+```{r}
+# need a new form of model check visualization
+model_df |>
+  select(absences, c_age, c_st, g_edu) |>
+  add_predicted_draws(m_mains, ndraws = 200) |>
+  ggplot(aes(x = c_age, y = .prediction)) +
+  stat_lineribbon(.width = c(.50, .80, .95)) +
+  scale_fill_brewer() +
+  geom_point(aes(y = absences), alpha = 0.4, data = model_df) +
+  theme_bw()
+```
+
+```{r}
+# repeat mc for next predictor
+model_df |>
+  select(absences, c_age, c_st, g_edu) |>
+  add_predicted_draws(m_mains, ndraws = 200) |>
+  ggplot(aes(x = c_st, y = .prediction)) +
+  stat_lineribbon(.width = c(.50, .80, .95)) +
+  scale_fill_brewer() +
+  geom_point(aes(y = absences), alpha = 0.4, data = model_df) +
+  theme_bw()
+```
+
+```{r}
+# modify by data type of predictor
+model_df |>
+  select(absences, c_age, c_st, g_edu) |>
+  add_predicted_draws(m_mains, ndraws = 200) |>
+  ggplot(aes(x = g_edu, y = .prediction)) +  
+  stat_interval(.width = c(.50, .80, .95), position = position_nudge(x = -0.1)) + 
+  scale_color_brewer() +                     
+  geom_point(aes(y = absences), alpha = 0.4, data = model_df) +
+  theme_bw()
+```
+
+I can sort of see where these points I'm not predicting well end up in across charts,
+and this gives me a sense of how to modify my model.
+
+```{r}
+# extend mc to show unmodeled potential interaction
+model_df |>
+  select(absences, c_age, c_st, g_edu) |>
+  add_predicted_draws(m_mains, ndraws = 200) |>
+  ggplot(aes(x = c_st, y = .prediction)) +
+  stat_lineribbon(.width = c(.50, .80, .95)) +
+  scale_fill_brewer() +
+  geom_point(aes(y = absences), alpha = 0.4, data = model_df) +
+  theme_bw() +
+  facet_grid(. ~ g_edu)
+```
+
+
+## Adding interactions
+
+Add an interaction effect to the model we come up with (if time, otherwise do 
+visualizations of inferential uncertainty for previous model).
+
+```{r}
+# ...
+```
+
+
+Show how to visualize inferential uncertainty now that we have predictors.
+
+- Examples: http://mjskay.github.io/tidybayes/articles/tidy-brms.html#posterior-means-and-predictions
+- Explanation of predicted vs epred vs linpred: https://mjskay.github.io/tidybayes/reference/add_predicted_draws.html
+- Probably want to use `data_grid` instead of `select` now.
+
+```{r}
+# save grid for next few vis bc this is a very large obj to hold in memory
+predictor_grid = model_df |>
+  data_grid(c_age, c_st, g_edu)
+```
+
+Effect of guardian education.
+
+```{r}
+# modifying our mc to show inferential uncertainty about central tendency
+predictor_grid |>
+  add_epred_draws(m_mains, ndraws = 200) |>
+  ggplot(aes(x = g_edu, y = .epred)) +  
+  stat_interval(.width = c(.50, .80, .95), position = position_nudge(x = -0.1)) + 
+  scale_color_brewer() +                     
+  geom_point(aes(y = absences), alpha = 0.4, data = model_df) +
+  theme_bw()
+```
+
+```{r}
+m_main_g_edu_contrasts = predictor_grid |>
+  add_epred_draws(m_mains, ndraws = 200) |>
+  compare_levels(.epred, by = g_edu) |>
+  ungroup() |>
+  mutate(g_edu = reorder(g_edu, .epred))
+```
+
+
+```{r}
+# showing contrasts
+m_main_g_edu_contrasts |>
+  ggplot(aes(x = g_edu, y = .epred)) +  
+  stat_eye() +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  coord_cartesian(ylim = c(-10, 10)) +
+  theme_bw()
+```
+
