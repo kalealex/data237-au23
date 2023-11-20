@@ -2,7 +2,9 @@
 title: "Lecture 11/16/2023 (in class)"
 author: "Alex Kale"
 date: "2023-11-16"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}

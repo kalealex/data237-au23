@@ -263,7 +263,6 @@ visualizations of inferential uncertainty for previous model).
 # ...
 ```
 
-
 Show how to visualize inferential uncertainty now that we have predictors.
 
 - Examples: http://mjskay.github.io/tidybayes/articles/tidy-brms.html#posterior-means-and-predictions
@@ -276,12 +275,18 @@ predictor_grid = model_df |>
   data_grid(c_age, c_st, g_edu)
 ```
 
-Effect of guardian education.
+Effect of guardian education. 
+
+Now we need to *marginalize* by averaging the effect 
+we are interested in looking at over the conditions in the model that we do not 
+want to compare. See here for a description and examples: https://htmlpreview.github.io/?https://github.com/mjskay/uncertainty-examples/blob/master/marginal-effects_categorical-predictor.html
 
 ```{r}
 # modifying our mc to show inferential uncertainty about central tendency
 predictor_grid |>
   add_epred_draws(m_mains, ndraws = 200) |>
+  group_by(g_edu, .draw) |>             # marginalization
+  summarise(.epred = mean(.epred)) |>   # marginalization
   ggplot(aes(x = g_edu, y = .epred)) +  
   stat_interval(.width = c(.50, .80, .95), position = position_nudge(x = -0.1)) + 
   scale_color_brewer() +                     
@@ -292,19 +297,25 @@ predictor_grid |>
 ```{r}
 m_main_g_edu_contrasts = predictor_grid |>
   add_epred_draws(m_mains, ndraws = 200) |>
+  group_by(g_edu, .draw) |>             # marginalization
+  summarise(.epred = mean(.epred)) |>   # marginalization  
   compare_levels(.epred, by = g_edu) |>
   ungroup() |>
-  mutate(g_edu = reorder(g_edu, .epred))
+  mutate(g_edu = reorder(g_edu, .epred)) |>
+  rename(
+    g_edu_diff = g_edu,
+    mean_diff_absences = .epred
+  )
 ```
 
 
 ```{r}
 # showing contrasts
 m_main_g_edu_contrasts |>
-  ggplot(aes(x = g_edu, y = .epred)) +  
+  ggplot(aes(x = g_edu_diff, y = mean_diff_absences)) +  
   stat_eye() +
   geom_hline(yintercept = 0, linetype = "dashed") +
-  coord_cartesian(ylim = c(-10, 10)) +
+  coord_cartesian(ylim = c(-8, 8)) +
   theme_bw()
 ```
 
